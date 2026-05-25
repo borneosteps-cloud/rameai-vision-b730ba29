@@ -14,7 +14,126 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      hooks: {
+        Row: {
+          category: string
+          content_type: string
+          created_at: string
+          emotion: string
+          favorite: boolean
+          id: string
+          language: string
+          last_used_at: string | null
+          source: string
+          text: string
+          use_count: number
+        }
+        Insert: {
+          category?: string
+          content_type?: string
+          created_at?: string
+          emotion?: string
+          favorite?: boolean
+          id?: string
+          language?: string
+          last_used_at?: string | null
+          source?: string
+          text: string
+          use_count?: number
+        }
+        Update: {
+          category?: string
+          content_type?: string
+          created_at?: string
+          emotion?: string
+          favorite?: boolean
+          id?: string
+          language?: string
+          last_used_at?: string | null
+          source?: string
+          text?: string
+          use_count?: number
+        }
+        Relationships: []
+      }
+      ideas: {
+        Row: {
+          body: string
+          caption: string
+          created_at: string
+          ending: string
+          foreshadow: string
+          hashtags: string[]
+          hook: string
+          id: string
+          language: string
+          title: string
+          tone: string
+          topic: string
+          viral_boost: boolean
+        }
+        Insert: {
+          body: string
+          caption: string
+          created_at?: string
+          ending: string
+          foreshadow: string
+          hashtags?: string[]
+          hook: string
+          id?: string
+          language?: string
+          title: string
+          tone: string
+          topic: string
+          viral_boost?: boolean
+        }
+        Update: {
+          body?: string
+          caption?: string
+          created_at?: string
+          ending?: string
+          foreshadow?: string
+          hashtags?: string[]
+          hook?: string
+          id?: string
+          language?: string
+          title?: string
+          tone?: string
+          topic?: string
+          viral_boost?: boolean
+        }
+        Relationships: []
+      }
+      persona: {
+        Row: {
+          do_md: string
+          dont_md: string
+          id: string
+          identity_md: string
+          name: string
+          style_md: string
+          updated_at: string
+        }
+        Insert: {
+          do_md?: string
+          dont_md?: string
+          id?: string
+          identity_md?: string
+          name?: string
+          style_md?: string
+          updated_at?: string
+        }
+        Update: {
+          do_md?: string
+          dont_md?: string
+          id?: string
+          identity_md?: string
+          name?: string
+          style_md?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
