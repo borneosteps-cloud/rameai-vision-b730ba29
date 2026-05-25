@@ -9,6 +9,10 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { AppShell } from "@/components/AppShell";
+import { Toaster } from "@/components/ui/sonner";
+import { LanguageProvider } from "@/i18n/LanguageProvider";
+import { PersonaProvider } from "@/i18n/PersonaProvider";
 
 function NotFoundComponent() {
   return (
@@ -71,15 +75,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+      { name: "theme-color", content: "#231712" },
+      { title: "RameAL — Wandy POV content brain" },
+      { name: "description", content: "AI content generator for honest Indonesian travel POV creators. Hooks, scripts, captions for Reels & TikTok." },
+      { property: "og:title", content: "RameAL — Wandy POV content brain" },
+      { property: "og:description", content: "Generate viral-ready Reels & TikTok scripts in your honest creator voice." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -96,11 +99,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="bg-background text-foreground antialiased">
         {children}
         <Scripts />
       </body>
@@ -113,7 +116,14 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <LanguageProvider>
+        <PersonaProvider>
+          <AppShell>
+            <Outlet />
+          </AppShell>
+          <Toaster richColors position="top-center" theme="dark" />
+        </PersonaProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 }
