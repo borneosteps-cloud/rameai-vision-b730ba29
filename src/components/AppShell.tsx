@@ -67,7 +67,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         className="fixed inset-x-0 bottom-0 z-30 border-t border-border/60 bg-background/95 backdrop-blur md:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        <div className="mx-auto grid max-w-3xl grid-cols-5">
+        <div className="mx-auto grid max-w-3xl grid-cols-6">
           {NAV.map((n) => {
             const active = pathname === n.to;
             const Icon = n.icon;
