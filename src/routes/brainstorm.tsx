@@ -231,7 +231,7 @@ function BrainstormPage() {
                     send();
                   }
                 }}
-                rows={1}
+                rows={4}
                 placeholder={
                   lang === "id"
                     ? "contoh: Gue lagi di Kam Fung Bakery, Wan Chai, Hong Kong..."
