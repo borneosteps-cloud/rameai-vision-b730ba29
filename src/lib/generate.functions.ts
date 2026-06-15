@@ -156,12 +156,12 @@ Return ${data.count} distinct, non-repetitive ideas. Each TITLE must be a short 
 
     try {
       const gateway = createLovableAiGatewayProvider(apiKey);
-      const model = gateway("google/gemini-3.1-flash-lite-preview");
+      const model = gateway("openai/gpt-4o");
 
       const { text } = await generateText({
         model,
         system,
-        temperature: 0.8,
+        temperature: 0.85,
         maxOutputTokens: 8192,
         prompt: `Topic: ${data.topic}\n\nGenerate ${data.count} ideas now in ${data.language === "en" ? "English" : "Bahasa Indonesia"}. Return ONLY valid JSON. No markdown. No explanation. Use this exact shape:\n{"ideas":[{"title":"","hook":"","foreshadow":"","body":"","ending":"","caption":"","hashtags":[""]}]}`,
       });

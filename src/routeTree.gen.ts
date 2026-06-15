@@ -13,6 +13,7 @@ import { Route as SavedRouteImport } from './routes/saved'
 import { Route as PersonaRouteImport } from './routes/persona'
 import { Route as HooksRouteImport } from './routes/hooks'
 import { Route as GenerateRouteImport } from './routes/generate'
+import { Route as BrainstormRouteImport } from './routes/brainstorm'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SavedRoute = SavedRouteImport.update({
@@ -35,6 +36,11 @@ const GenerateRoute = GenerateRouteImport.update({
   path: '/generate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrainstormRoute = BrainstormRouteImport.update({
+  id: '/brainstorm',
+  path: '/brainstorm',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/brainstorm': typeof BrainstormRoute
   '/generate': typeof GenerateRoute
   '/hooks': typeof HooksRoute
   '/persona': typeof PersonaRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/brainstorm': typeof BrainstormRoute
   '/generate': typeof GenerateRoute
   '/hooks': typeof HooksRoute
   '/persona': typeof PersonaRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/brainstorm': typeof BrainstormRoute
   '/generate': typeof GenerateRoute
   '/hooks': typeof HooksRoute
   '/persona': typeof PersonaRoute
@@ -65,14 +74,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/generate' | '/hooks' | '/persona' | '/saved'
+  fullPaths:
+    | '/'
+    | '/brainstorm'
+    | '/generate'
+    | '/hooks'
+    | '/persona'
+    | '/saved'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/generate' | '/hooks' | '/persona' | '/saved'
-  id: '__root__' | '/' | '/generate' | '/hooks' | '/persona' | '/saved'
+  to: '/' | '/brainstorm' | '/generate' | '/hooks' | '/persona' | '/saved'
+  id:
+    | '__root__'
+    | '/'
+    | '/brainstorm'
+    | '/generate'
+    | '/hooks'
+    | '/persona'
+    | '/saved'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BrainstormRoute: typeof BrainstormRoute
   GenerateRoute: typeof GenerateRoute
   HooksRoute: typeof HooksRoute
   PersonaRoute: typeof PersonaRoute
@@ -109,6 +132,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GenerateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brainstorm': {
+      id: '/brainstorm'
+      path: '/brainstorm'
+      fullPath: '/brainstorm'
+      preLoaderRoute: typeof BrainstormRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,6 +151,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BrainstormRoute: BrainstormRoute,
   GenerateRoute: GenerateRoute,
   HooksRoute: HooksRoute,
   PersonaRoute: PersonaRoute,

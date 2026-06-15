@@ -14,6 +14,7 @@ const en: Dict = {
   // nav
   "nav.home": "Home",
   "nav.generate": "Generate",
+  "nav.brainstorm": "Brainstorm",
   "nav.saved": "Saved",
   "nav.hooks": "Library",
   "nav.persona": "Persona",
@@ -90,6 +91,7 @@ const en: Dict = {
 const id: Dict = {
   "nav.home": "Beranda",
   "nav.generate": "Generate",
+  "nav.brainstorm": "Brainstorm",
   "nav.saved": "Tersimpan",
   "nav.hooks": "Library",
   "nav.persona": "Persona",
