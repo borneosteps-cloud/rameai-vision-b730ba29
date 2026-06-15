@@ -173,10 +173,10 @@ function BrainstormPage() {
 
       <div className="grid gap-4 md:grid-cols-5">
         {/* Chat column */}
-        <section className="md:col-span-3 flex flex-col rounded-2xl border border-border/60 bg-card overflow-hidden min-h-[520px]">
+        <section className="md:col-span-3 flex flex-col rounded-2xl border border-border/60 bg-card overflow-hidden min-h-[320px]">
           <div
             ref={scrollRef}
-            className="flex-1 space-y-3 overflow-y-auto p-4 max-h-[60vh] md:max-h-[65vh]"
+            className="flex-1 space-y-3 overflow-y-auto p-4 max-h-[35vh] md:max-h-[45vh]"
           >
             {messages.length === 0 && (
               <div className="flex h-full items-center justify-center text-center text-sm text-muted-foreground">
