@@ -237,7 +237,7 @@ function BrainstormPage() {
                     ? "contoh: Gue lagi di Kam Fung Bakery, Wan Chai, Hong Kong..."
                     : "e.g. I'm at Kam Fung Bakery in Wan Chai, Hong Kong right now..."
                 }
-                className="resize-none border-border/60 bg-background/40 h-[55vh] min-h-[55vh] max-h-[55vh] text-base md:h-auto md:resize-y md:min-h-[120px] md:max-h-[260px]"
+                className="resize-none border-border/60 bg-background/40 h-[28vh] min-h-[28vh] max-h-[28vh] text-base md:h-auto md:resize-y md:min-h-[120px] md:max-h-[260px]"
               />
               <Button
                 onClick={send}
