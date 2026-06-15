@@ -96,11 +96,11 @@ DO NOT mix languages. Keep universally accepted production terms (close-up, push
 
     try {
       const gateway = createLovableAiGatewayProvider(apiKey);
-      const model = gateway("google/gemini-3.1-flash-lite-preview");
+      const model = gateway("openai/gpt-4o");
       const { text } = await generateText({
         model,
         system,
-        temperature: 0.7,
+        temperature: 0.75,
         maxOutputTokens: 6000,
         prompt: `Title: ${data.title}\n\nScript:\n${fullScript}\n\nReturn ONLY JSON in this exact shape:\n{"shots":[{"time":"","script":"","shotType":"","cameraAngle":"","cameraMovement":"","visualDirection":"","bRoll":"","textOverlay":"","expression":"","transition":""}]}`,
       });
