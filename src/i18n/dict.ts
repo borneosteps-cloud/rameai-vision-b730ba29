@@ -14,6 +14,7 @@ const en: Dict = {
   // nav
   "nav.home": "Home",
   "nav.generate": "Generate",
+  "nav.brainstorm": "Brainstorm",
   "nav.saved": "Saved",
   "nav.hooks": "Library",
   "nav.persona": "Persona",
