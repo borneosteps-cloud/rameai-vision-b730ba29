@@ -50,6 +50,7 @@ function ThumbnailPage() {
   const [titleShadow, setTitleShadow] = useState("#000000");
   const [titleBlur, setTitleBlur] = useState(10);
   const [titleAlign, setTitleAlign] = useState<"left" | "center" | "right">("center");
+  const [titleX, setTitleX] = useState(0.5);
   const [titleY, setTitleY] = useState(0.62);
 
   const [subText, setSubText] = useState(initSubtitle || "type text");
@@ -58,6 +59,7 @@ function ThumbnailPage() {
   const [subShadow, setSubShadow] = useState("#000000");
   const [subBlur, setSubBlur] = useState(10);
   const [subAlign, setSubAlign] = useState<"left" | "center" | "right">("center");
+  const [subX, setSubX] = useState(0.5);
   const [subY, setSubY] = useState(0.74);
   const [subShow, setSubShow] = useState(true);
 
@@ -88,17 +90,17 @@ function ThumbnailPage() {
       overlayOpacity,
       title: {
         text: titleText, sizePx: titleSize, color: titleColor,
-        shadowColor: titleShadow, shadowBlur: titleBlur, align: titleAlign, yPct: titleY,
+        shadowColor: titleShadow, shadowBlur: titleBlur, align: titleAlign, xPct: titleX, yPct: titleY,
       },
       subtitle: {
         text: subText, sizePx: subSize, color: subColor,
-        shadowColor: subShadow, shadowBlur: subBlur, align: subAlign, yPct: subY, show: subShow,
+        shadowColor: subShadow, shadowBlur: subBlur, align: subAlign, xPct: subX, yPct: subY, show: subShow,
       },
       emoji: { text: emoji, sizePx: emojiSize, xPct: emojiX, yPct: emojiY, show: emojiShow },
       font: activeFont,
     }),
-    [bgImage, overlayColor, overlayOpacity, titleText, titleSize, titleColor, titleShadow, titleBlur, titleAlign, titleY,
-     subText, subSize, subColor, subShadow, subBlur, subAlign, subY, subShow,
+    [bgImage, overlayColor, overlayOpacity, titleText, titleSize, titleColor, titleShadow, titleBlur, titleAlign, titleX, titleY,
+     subText, subSize, subColor, subShadow, subBlur, subAlign, subX, subY, subShow,
      emoji, emojiSize, emojiX, emojiY, emojiShow, activeFont],
   );
 
@@ -172,10 +174,17 @@ function ThumbnailPage() {
     return null;
   }
 
+  const dragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
   function handlePointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
     const { x, y } = getCanvasPoint(e);
     const hit = hitTest(x, y);
     if (!hit) return;
+    let cx = 0, cy = 0;
+    if (hit === "title") { cx = titleX * DISPLAY_W; cy = titleY * DISPLAY_H; }
+    else if (hit === "subtitle") { cx = subX * DISPLAY_W; cy = subY * DISPLAY_H; }
+    else { cx = emojiX * DISPLAY_W; cy = emojiY * DISPLAY_H; }
+    dragOffset.current = { x: cx - x, y: cy - y };
     setDragging(hit);
     (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
   }
@@ -183,13 +192,13 @@ function ThumbnailPage() {
   function handlePointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
     if (!dragging) return;
     const { x, y } = getCanvasPoint(e);
-    const yPct = Math.max(0.02, Math.min(0.98, y / DISPLAY_H));
-    if (dragging === "title") setTitleY(yPct);
-    else if (dragging === "subtitle") setSubY(yPct);
-    else if (dragging === "emoji") {
-      setEmojiX(Math.max(0, Math.min(1, x / DISPLAY_W)));
-      setEmojiY(yPct);
-    }
+    const nx = x + dragOffset.current.x;
+    const ny = y + dragOffset.current.y;
+    const xPct = Math.max(0, Math.min(1, nx / DISPLAY_W));
+    const yPct = Math.max(0.02, Math.min(0.98, ny / DISPLAY_H));
+    if (dragging === "title") { setTitleX(xPct); setTitleY(yPct); }
+    else if (dragging === "subtitle") { setSubX(xPct); setSubY(yPct); }
+    else if (dragging === "emoji") { setEmojiX(xPct); setEmojiY(yPct); }
   }
 
   function handlePointerEnd(e: React.PointerEvent<HTMLCanvasElement>) {
