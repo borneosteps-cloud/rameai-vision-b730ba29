@@ -174,10 +174,17 @@ function ThumbnailPage() {
     return null;
   }
 
+  const dragOffset = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
   function handlePointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
     const { x, y } = getCanvasPoint(e);
     const hit = hitTest(x, y);
     if (!hit) return;
+    let cx = 0, cy = 0;
+    if (hit === "title") { cx = titleX * DISPLAY_W; cy = titleY * DISPLAY_H; }
+    else if (hit === "subtitle") { cx = subX * DISPLAY_W; cy = subY * DISPLAY_H; }
+    else { cx = emojiX * DISPLAY_W; cy = emojiY * DISPLAY_H; }
+    dragOffset.current = { x: cx - x, y: cy - y };
     setDragging(hit);
     (e.target as HTMLCanvasElement).setPointerCapture(e.pointerId);
   }
@@ -185,13 +192,13 @@ function ThumbnailPage() {
   function handlePointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
     if (!dragging) return;
     const { x, y } = getCanvasPoint(e);
-    const yPct = Math.max(0.02, Math.min(0.98, y / DISPLAY_H));
-    if (dragging === "title") setTitleY(yPct);
-    else if (dragging === "subtitle") setSubY(yPct);
-    else if (dragging === "emoji") {
-      setEmojiX(Math.max(0, Math.min(1, x / DISPLAY_W)));
-      setEmojiY(yPct);
-    }
+    const nx = x + dragOffset.current.x;
+    const ny = y + dragOffset.current.y;
+    const xPct = Math.max(0, Math.min(1, nx / DISPLAY_W));
+    const yPct = Math.max(0.02, Math.min(0.98, ny / DISPLAY_H));
+    if (dragging === "title") { setTitleX(xPct); setTitleY(yPct); }
+    else if (dragging === "subtitle") { setSubX(xPct); setSubY(yPct); }
+    else if (dragging === "emoji") { setEmojiX(xPct); setEmojiY(yPct); }
   }
 
   function handlePointerEnd(e: React.PointerEvent<HTMLCanvasElement>) {
