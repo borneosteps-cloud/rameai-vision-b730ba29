@@ -50,6 +50,7 @@ function ThumbnailPage() {
   const [titleShadow, setTitleShadow] = useState("#000000");
   const [titleBlur, setTitleBlur] = useState(10);
   const [titleAlign, setTitleAlign] = useState<"left" | "center" | "right">("center");
+  const [titleX, setTitleX] = useState(0.5);
   const [titleY, setTitleY] = useState(0.62);
 
   const [subText, setSubText] = useState(initSubtitle || "type text");
@@ -58,6 +59,7 @@ function ThumbnailPage() {
   const [subShadow, setSubShadow] = useState("#000000");
   const [subBlur, setSubBlur] = useState(10);
   const [subAlign, setSubAlign] = useState<"left" | "center" | "right">("center");
+  const [subX, setSubX] = useState(0.5);
   const [subY, setSubY] = useState(0.74);
   const [subShow, setSubShow] = useState(true);
 
