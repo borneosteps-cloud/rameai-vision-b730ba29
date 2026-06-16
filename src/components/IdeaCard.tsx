@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Copy, Check, Bookmark, Quote } from "lucide-react";
+import { Copy, Check, Bookmark, Quote, Image as ImageIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
