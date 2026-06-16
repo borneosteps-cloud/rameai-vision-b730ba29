@@ -66,7 +66,7 @@ function Home() {
         </p>
         <Link to="/brainstorm" className="mt-4 inline-block">
           <Button size="lg" variant="secondary" className="rounded-full">
-            <Sparkles className="mr-2 h-4 w-4" />
+            <img src={logoAsset.url} alt="" className="mr-2 h-4 w-4 object-contain" />
             {lang === "id" ? "Brainstorm" : "Brainstorm"}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
