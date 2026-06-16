@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ThumbnailRouteImport } from './routes/thumbnail'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as PersonaRouteImport } from './routes/persona'
 import { Route as HooksRouteImport } from './routes/hooks'
@@ -17,11 +16,6 @@ import { Route as GenerateRouteImport } from './routes/generate'
 import { Route as BrainstormRouteImport } from './routes/brainstorm'
 import { Route as IndexRouteImport } from './routes/index'
 
-const ThumbnailRoute = ThumbnailRouteImport.update({
-  id: '/thumbnail',
-  path: '/thumbnail',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
@@ -60,7 +54,6 @@ export interface FileRoutesByFullPath {
   '/hooks': typeof HooksRoute
   '/persona': typeof PersonaRoute
   '/saved': typeof SavedRoute
-  '/thumbnail': typeof ThumbnailRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,7 +62,6 @@ export interface FileRoutesByTo {
   '/hooks': typeof HooksRoute
   '/persona': typeof PersonaRoute
   '/saved': typeof SavedRoute
-  '/thumbnail': typeof ThumbnailRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -79,7 +71,6 @@ export interface FileRoutesById {
   '/hooks': typeof HooksRoute
   '/persona': typeof PersonaRoute
   '/saved': typeof SavedRoute
-  '/thumbnail': typeof ThumbnailRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,16 +81,8 @@ export interface FileRouteTypes {
     | '/hooks'
     | '/persona'
     | '/saved'
-    | '/thumbnail'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/brainstorm'
-    | '/generate'
-    | '/hooks'
-    | '/persona'
-    | '/saved'
-    | '/thumbnail'
+  to: '/' | '/brainstorm' | '/generate' | '/hooks' | '/persona' | '/saved'
   id:
     | '__root__'
     | '/'
@@ -108,7 +91,6 @@ export interface FileRouteTypes {
     | '/hooks'
     | '/persona'
     | '/saved'
-    | '/thumbnail'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -118,18 +100,10 @@ export interface RootRouteChildren {
   HooksRoute: typeof HooksRoute
   PersonaRoute: typeof PersonaRoute
   SavedRoute: typeof SavedRoute
-  ThumbnailRoute: typeof ThumbnailRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/thumbnail': {
-      id: '/thumbnail'
-      path: '/thumbnail'
-      fullPath: '/thumbnail'
-      preLoaderRoute: typeof ThumbnailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/saved': {
       id: '/saved'
       path: '/saved'
@@ -182,7 +156,6 @@ const rootRouteChildren: RootRouteChildren = {
   HooksRoute: HooksRoute,
   PersonaRoute: PersonaRoute,
   SavedRoute: SavedRoute,
-  ThumbnailRoute: ThumbnailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Copy, Check, Bookmark, Quote, Image as ImageIcon } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Copy, Check, Bookmark, Quote } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -154,14 +153,6 @@ export function IdeaCard({
           autoOpen={autoOpenStoryboard}
         />
       </div>
-
-      <Link
-        to="/thumbnail"
-        search={{ title: idea.hook, subtitle: idea.foreshadow }}
-        className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-md border border-border/60 bg-secondary px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-secondary/80"
-      >
-        <ImageIcon className="h-3.5 w-3.5" /> Make Thumbnail →
-      </Link>
     </article>
   );
 }
