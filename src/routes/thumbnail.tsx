@@ -90,17 +90,17 @@ function ThumbnailPage() {
       overlayOpacity,
       title: {
         text: titleText, sizePx: titleSize, color: titleColor,
-        shadowColor: titleShadow, shadowBlur: titleBlur, align: titleAlign, yPct: titleY,
+        shadowColor: titleShadow, shadowBlur: titleBlur, align: titleAlign, xPct: titleX, yPct: titleY,
       },
       subtitle: {
         text: subText, sizePx: subSize, color: subColor,
-        shadowColor: subShadow, shadowBlur: subBlur, align: subAlign, yPct: subY, show: subShow,
+        shadowColor: subShadow, shadowBlur: subBlur, align: subAlign, xPct: subX, yPct: subY, show: subShow,
       },
       emoji: { text: emoji, sizePx: emojiSize, xPct: emojiX, yPct: emojiY, show: emojiShow },
       font: activeFont,
     }),
-    [bgImage, overlayColor, overlayOpacity, titleText, titleSize, titleColor, titleShadow, titleBlur, titleAlign, titleY,
-     subText, subSize, subColor, subShadow, subBlur, subAlign, subY, subShow,
+    [bgImage, overlayColor, overlayOpacity, titleText, titleSize, titleColor, titleShadow, titleBlur, titleAlign, titleX, titleY,
+     subText, subSize, subColor, subShadow, subBlur, subAlign, subX, subY, subShow,
      emoji, emojiSize, emojiX, emojiY, emojiShow, activeFont],
   );
 
