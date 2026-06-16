@@ -83,7 +83,8 @@ function drawTextLayer(
   const lineH = layer.sizePx * scale * 1.15;
   const totalH = lineH * lines.length;
   const startY = layer.yPct * h - totalH / 2 + lineH / 2;
-  const x = layer.align === "left" ? padding : layer.align === "right" ? w - padding : w / 2;
+  const baseX = layer.align === "left" ? padding : layer.align === "right" ? w - padding : w / 2;
+  const x = baseX + (layer.xPct - 0.5) * w;
   lines.forEach((ln, i) => ctx.fillText(ln, x, startY + i * lineH));
   ctx.shadowBlur = 0;
 }
