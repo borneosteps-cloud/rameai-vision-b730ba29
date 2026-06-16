@@ -297,12 +297,7 @@ function ThumbnailPage() {
               <Row label={`Size ${emojiSize}px`}>
                 <Slider min={20} max={130} step={1} value={[emojiSize]} onValueChange={(v) => setEmojiSize(v[0])} />
               </Row>
-              <Row label={`X position ${Math.round(emojiX * 100)}%`}>
-                <Slider min={0} max={100} step={1} value={[emojiX * 100]} onValueChange={(v) => setEmojiX(v[0] / 100)} />
-              </Row>
-              <Row label={`Y position ${Math.round(emojiY * 100)}%`}>
-                <Slider min={0} max={100} step={1} value={[emojiY * 100]} onValueChange={(v) => setEmojiY(v[0] / 100)} />
-              </Row>
+              <p className="text-[11px] text-muted-foreground">Drag the emoji on the canvas to reposition.</p>
               <div className="grid grid-cols-7 gap-1.5">
                 {EMOJI_GRID.map((e) => {
                   const selected = e === emoji;
