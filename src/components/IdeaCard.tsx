@@ -154,6 +154,14 @@ export function IdeaCard({
           autoOpen={autoOpenStoryboard}
         />
       </div>
+
+      <Link
+        to="/thumbnail"
+        search={{ title: idea.hook, subtitle: idea.foreshadow }}
+        className="mt-2 inline-flex w-full items-center justify-center gap-1.5 rounded-md border border-border/60 bg-secondary px-3 py-2 text-xs font-medium text-foreground transition-colors hover:bg-secondary/80"
+      >
+        <ImageIcon className="h-3.5 w-3.5" /> Make Thumbnail →
+      </Link>
     </article>
   );
 }
