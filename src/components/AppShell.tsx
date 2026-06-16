@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Sparkles, Bookmark, Quote, User2, LayoutDashboard, Brain } from "lucide-react";
+import { Sparkles, Bookmark, Quote, User2, LayoutDashboard, Brain, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/i18n/LanguageProvider";
 import { usePersona } from "@/i18n/PersonaProvider";
@@ -9,6 +9,7 @@ const NAV = [
   { to: "/", labelKey: "nav.home", icon: LayoutDashboard },
   { to: "/generate", labelKey: "nav.generate", icon: Sparkles },
   { to: "/brainstorm", labelKey: "nav.brainstorm", icon: Brain },
+  { to: "/thumbnail", labelKey: "nav.thumbnail", icon: ImageIcon },
   { to: "/saved", labelKey: "nav.saved", icon: Bookmark },
   { to: "/hooks", labelKey: "nav.hooks", icon: Quote },
   { to: "/persona", labelKey: "nav.persona", icon: User2 },
@@ -67,7 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         className="fixed inset-x-0 bottom-0 z-30 border-t border-border/60 bg-background/95 backdrop-blur md:hidden"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
-        <div className="mx-auto grid max-w-3xl grid-cols-6">
+        <div className="mx-auto grid max-w-3xl grid-cols-7">
           {NAV.map((n) => {
             const active = pathname === n.to;
             const Icon = n.icon;
