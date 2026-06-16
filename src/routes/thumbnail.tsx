@@ -65,7 +65,9 @@ function ThumbnailPage() {
   const [emojiSize, setEmojiSize] = useState(64);
   const [emojiX, setEmojiX] = useState(0.5);
   const [emojiY, setEmojiY] = useState(0.5);
-  const [emojiShow, setEmojiShow] = useState(true);
+  const [emojiShow, setEmojiShow] = useState(false);
+
+  const [dragging, setDragging] = useState<null | "title" | "subtitle" | "emoji">(null);
 
   const [fontFamily, setFontFamily] = useState<string>("Bebas Neue");
   const [fontStatus, setFontStatus] = useState<string>("idle");
