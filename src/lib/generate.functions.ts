@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateText } from "ai";
 import { z } from "zod";
-import { createLovableAiGatewayProvider } from "./ai-gateway";
+import { createGeminiProvider, GEMINI_MODEL, mapAiError } from "./ai-gateway";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const IdeaSchema = z.object({
@@ -85,9 +85,9 @@ function normalizeIdea(raw: unknown) {
 export const generateIdeas = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => InputSchema.parse(input))
   .handler(async ({ data }) => {
-    const apiKey = process.env.LOVABLE_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return { ok: false as const, error: "AI not configured. Add LOVABLE_API_KEY." };
+      return { ok: false as const, error: "AI not configured. Add GEMINI_API_KEY." };
     }
 
     // Load persona from DB
@@ -155,11 +155,9 @@ ${data.language === "en" ? "If the topic is written in Indonesian, translate the
 Return ${data.count} distinct, non-repetitive ideas. Each TITLE must be a short internal label (4–7 words), not a hashtag.`;
 
     try {
-      const gateway = createLovableAiGatewayProvider(apiKey);
-      const model = gateway("openai/gpt-4o");
-
+      const gemini = createGeminiProvider(apiKey);
       const { text } = await generateText({
-        model,
+        model: gemini(GEMINI_MODEL),
         system,
         temperature: 0.85,
         maxOutputTokens: 8192,
@@ -175,10 +173,7 @@ Return ${data.count} distinct, non-repetitive ideas. Each TITLE must be a short 
 
       return { ok: true as const, ideas, topic: data.topic, tone: data.tone, viralBoost: data.viralBoost, durationSec: data.durationSec, language: data.language };
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error("generateIdeas error:", msg);
-      if (msg.includes("429")) return { ok: false as const, error: "Rate limit hit. Please retry shortly." };
-      if (msg.includes("402")) return { ok: false as const, error: "AI credits exhausted. Add credits in Workspace settings." };
-      return { ok: false as const, error: `Generation failed: ${msg.slice(0, 200)}` };
+      console.error("generateIdeas error:", err);
+      return { ok: false as const, error: mapAiError(err) };
     }
   });

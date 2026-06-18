@@ -1,11 +1,17 @@
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 
-export const createLovableAiGatewayProvider = (lovableApiKey: string) =>
+export const GEMINI_MODEL = "gemini-1.5-flash";
+
+export const createGeminiProvider = (apiKey: string) =>
   createOpenAICompatible({
-    name: "lovable",
-    baseURL: "https://ai.gateway.lovable.dev/v1",
-    headers: {
-      "Lovable-API-Key": lovableApiKey,
-      "X-Lovable-AIG-SDK": "vercel-ai-sdk",
-    },
+    name: "gemini",
+    baseURL: "https://generativelanguage.googleapis.com/v1beta/openai",
+    apiKey,
   });
+
+export function mapAiError(err: unknown): string {
+  const msg = err instanceof Error ? err.message : String(err);
+  if (msg.includes("429")) return "Rate limit hit. Wait a moment and retry.";
+  if (msg.includes("401")) return "Invalid Gemini API key.";
+  return msg;
+}

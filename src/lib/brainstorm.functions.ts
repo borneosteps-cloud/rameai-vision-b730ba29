@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateText } from "ai";
 import { z } from "zod";
-import { createLovableAiGatewayProvider } from "./ai-gateway";
+import { createGeminiProvider, GEMINI_MODEL, mapAiError } from "./ai-gateway";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 const MessageSchema = z.object({
@@ -17,8 +17,8 @@ const ChatInput = z.object({
 export const brainstormChat = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => ChatInput.parse(input))
   .handler(async ({ data }) => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) return { ok: false as const, error: "AI not configured." };
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) return { ok: false as const, error: "AI not configured. Add GEMINI_API_KEY." };
 
     const { data: personaRows } = await supabaseAdmin.from("persona").select("*").limit(1);
     const persona = personaRows?.[0];
@@ -50,10 +50,9 @@ When they describe a place, experience, observation, or idea:
 Always respond in ${langName}. If the user switches language, follow them, but default to ${langName}.`;
 
     try {
-      const gateway = createLovableAiGatewayProvider(apiKey);
-      const model = gateway("openai/gpt-4o");
+      const gemini = createGeminiProvider(apiKey);
       const { text } = await generateText({
-        model,
+        model: gemini(GEMINI_MODEL),
         system,
         temperature: 0.9,
         maxOutputTokens: 600,
@@ -61,11 +60,8 @@ Always respond in ${langName}. If the user switches language, follow them, but d
       });
       return { ok: true as const, reply: text.trim() };
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error("brainstormChat error:", msg);
-      if (msg.includes("429")) return { ok: false as const, error: "Rate limit hit. Retry shortly." };
-      if (msg.includes("402")) return { ok: false as const, error: "AI credits exhausted." };
-      return { ok: false as const, error: `AI failed: ${msg.slice(0, 200)}` };
+      console.error("brainstormChat error:", err);
+      return { ok: false as const, error: mapAiError(err) };
     }
   });
 
@@ -87,8 +83,8 @@ function extractJson(text: string): unknown {
 export const extractBrainstormTopics = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => ChatInput.parse(input))
   .handler(async ({ data }) => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) return { ok: false as const, error: "AI not configured." };
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) return { ok: false as const, error: "AI not configured. Add GEMINI_API_KEY." };
 
     const langName = data.language === "en" ? "English" : "Bahasa Indonesia";
     const transcript = data.messages
@@ -99,10 +95,9 @@ export const extractBrainstormTopics = createServerFn({ method: "POST" })
     const prompt = `Conversation:\n${transcript}\n\nReturn exactly 3 video topic suggestions in this exact JSON shape:\n{"topics":[{"title":"short punchy topic (max 10 words)","tone":"Honest|Comedy|Twist|Shock|Informative","hook":"one-line hook angle"}]}`;
 
     try {
-      const gateway = createLovableAiGatewayProvider(apiKey);
-      const model = gateway("openai/gpt-4o");
+      const gemini = createGeminiProvider(apiKey);
       const { text } = await generateText({
-        model,
+        model: gemini(GEMINI_MODEL),
         system,
         temperature: 0.7,
         maxOutputTokens: 800,
@@ -111,8 +106,7 @@ export const extractBrainstormTopics = createServerFn({ method: "POST" })
       const parsed = TopicsResult.parse(extractJson(text));
       return { ok: true as const, topics: parsed.topics.slice(0, 3) };
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error("extractBrainstormTopics error:", msg);
-      return { ok: false as const, error: `Topic extraction failed: ${msg.slice(0, 200)}` };
+      console.error("extractBrainstormTopics error:", err);
+      return { ok: false as const, error: mapAiError(err) };
     }
   });

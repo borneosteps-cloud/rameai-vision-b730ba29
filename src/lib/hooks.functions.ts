@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateText } from "ai";
 import { z } from "zod";
-import { createLovableAiGatewayProvider } from "./ai-gateway";
+import { createGeminiProvider, GEMINI_MODEL, mapAiError } from "./ai-gateway";
 
 const MODES = ["rewrite", "viral", "shorten", "translate", "generate"] as const;
 
@@ -52,18 +52,17 @@ function extractJson(text: string): unknown {
 export const enhanceHooks = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => InputSchema.parse(input))
   .handler(async ({ data }) => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) return { ok: false as const, error: "AI not configured." };
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) return { ok: false as const, error: "AI not configured. Add GEMINI_API_KEY." };
 
     if (data.mode !== "generate" && !data.hook?.trim()) {
       return { ok: false as const, error: "Need a hook for this mode." };
     }
 
     try {
-      const gateway = createLovableAiGatewayProvider(apiKey);
-      const model = gateway("openai/gpt-4o");
+      const gemini = createGeminiProvider(apiKey);
       const { text } = await generateText({
-        model,
+        model: gemini(GEMINI_MODEL),
         system: systemFor(data.appLanguage, data.mode),
         temperature: 0.9,
         maxOutputTokens: 1200,
@@ -77,10 +76,7 @@ export const enhanceHooks = createServerFn({ method: "POST" })
       if (!hooks.length) throw new Error("AI returned no hooks");
       return { ok: true as const, hooks };
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error("enhanceHooks error:", msg);
-      if (msg.includes("429")) return { ok: false as const, error: "Rate limit hit. Retry shortly." };
-      if (msg.includes("402")) return { ok: false as const, error: "AI credits exhausted." };
-      return { ok: false as const, error: `AI failed: ${msg.slice(0, 200)}` };
+      console.error("enhanceHooks error:", err);
+      return { ok: false as const, error: mapAiError(err) };
     }
   });
