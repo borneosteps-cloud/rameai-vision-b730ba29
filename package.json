@@ -3,7 +3,8 @@
   "private": true,
   "sideEffects": ["./src/lib/error-capture.ts"],
   "type": "module",
-}
+  "scripts": {
+    ...
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
