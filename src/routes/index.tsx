@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Bookmark, Quote, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
-import logoAsset from "@/assets/logo_orange_only.svg.asset.json";
+import logoUrl from "@/assets/logo_orange_only.svg";
 import { useLang } from "@/i18n/LanguageProvider";
 import { usePersona } from "@/i18n/PersonaProvider";
 
