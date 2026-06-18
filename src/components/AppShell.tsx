@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { Sparkles, Bookmark, Quote, User2, LayoutDashboard, Brain } from "lucide-react";
-import logoAsset from "@/assets/logo_orange_only.svg.asset.json";
+import logoUrl from "@/assets/logo_orange_only.svg";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/i18n/LanguageProvider";
 import { usePersona } from "@/i18n/PersonaProvider";
