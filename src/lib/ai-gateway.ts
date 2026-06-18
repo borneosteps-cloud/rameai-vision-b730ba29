@@ -4,7 +4,7 @@ export const GEMINI_MODEL = "gemini-1.5-flash";
 
 export const createGeminiProvider = (apiKey: string) =>
   createOpenAICompatible({
-    name: "gemini",
+    name: "GEMINI_API_KEY",
     baseURL: "https://generativelanguage.googleapis.com/v1beta/openai",
     apiKey,
   });
