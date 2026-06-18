@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateText } from "ai";
 import { z } from "zod";
-import { createLovableAiGatewayProvider } from "./ai-gateway";
+import { createGeminiProvider, GEMINI_MODEL, mapAiError } from "./ai-gateway";
 
 const ShotSchema = z.object({
   time: z.string(),
@@ -64,8 +64,8 @@ function extractJson(text: string): unknown {
 export const generateStoryboard = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => InputSchema.parse(input))
   .handler(async ({ data }) => {
-    const apiKey = process.env.LOVABLE_API_KEY;
-    if (!apiKey) return { ok: false as const, error: "AI not configured." };
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) return { ok: false as const, error: "AI not configured. Add GEMINI_API_KEY." };
 
     const fullScript = `HOOK: ${data.hook}\nFORESHADOW: ${data.foreshadow}\nBODY: ${data.body}\nENDING: ${data.ending}`;
     const sceneCount = Math.max(4, Math.min(12, Math.round(data.durationSec / 3)));
@@ -95,10 +95,9 @@ DO NOT mix languages. Keep universally accepted production terms (close-up, push
 - "time" format: "0–2s", "2–4s" etc., contiguous, ending at ~${data.durationSec}s.`;
 
     try {
-      const gateway = createLovableAiGatewayProvider(apiKey);
-      const model = gateway("openai/gpt-4o");
+      const gemini = createGeminiProvider(apiKey);
       const { text } = await generateText({
-        model,
+        model: gemini(GEMINI_MODEL),
         system,
         temperature: 0.75,
         maxOutputTokens: 6000,
@@ -107,11 +106,8 @@ DO NOT mix languages. Keep universally accepted production terms (close-up, push
       const parsed = ResultSchema.parse(extractJson(text));
       return { ok: true as const, shots: parsed.shots, style: data.style };
     } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      console.error("generateStoryboard error:", msg);
-      if (msg.includes("429")) return { ok: false as const, error: "Rate limit hit. Retry shortly." };
-      if (msg.includes("402")) return { ok: false as const, error: "AI credits exhausted." };
-      return { ok: false as const, error: `Storyboard failed: ${msg.slice(0, 200)}` };
+      console.error("generateStoryboard error:", err);
+      return { ok: false as const, error: mapAiError(err) };
     }
   });
 
