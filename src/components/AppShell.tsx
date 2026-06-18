@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { Sparkles, Bookmark, Quote, User2, LayoutDashboard, Brain } from "lucide-react";
-import logoAsset from "@/assets/logo_orange_only.svg.asset.json";
+import logoUrl from "@/assets/logo_orange_only.svg";
 import { cn } from "@/lib/utils";
 import { useLang } from "@/i18n/LanguageProvider";
 import { usePersona } from "@/i18n/PersonaProvider";
@@ -25,7 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-3 px-4 py-3">
           <Link to="/" className="flex items-center gap-2">
             <div className="grid h-8 w-8 place-items-center overflow-hidden rounded-xl bg-background">
-              <img src={logoAsset.url} alt="RAMEAI logo" className="h-8 w-8 object-contain" />
+              <img src={logoUrl} alt="RAMEAI logo" className="h-8 w-8 object-contain" />
             </div>
             <div className="leading-tight">
               <div className="text-sm font-semibold tracking-tight">RAMEAI</div>
