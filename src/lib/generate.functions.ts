@@ -85,7 +85,7 @@ function normalizeIdea(raw: unknown) {
 export const generateIdeas = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => InputSchema.parse(input))
   .handler(async ({ data }) => {
-    const apiKey = process.env.GEMINI_API_KEY;
+   const apiKey = process.env.GEMINI_API_KEY ?? (globalThis as any).GEMINI_API_KEY;
     if (!apiKey) {
       return { ok: false as const, error: "AI not configured. Add GEMINI_API_KEY." };
     }
