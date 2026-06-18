@@ -8,6 +8,6 @@
     "directory": "./dist/client"
   },
   "vars": {
-    "GEMINI_API_KEY": "AQ.Ab8RN6IrUDLsJ2YLP6B61n5k5gQb6c8OwcgIkxbWM3AAOpHAbw"
+    "GEMINI_API_KEY": ""
   }
 }
